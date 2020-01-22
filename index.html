@@ -15,23 +15,33 @@
   <button class="submit-button">Set Players</button>
 </section>
 <section class="playboard">
-  <div class="buttons">New Game</div>
+  <button class="buttons new-game-button">New Game</button>
   <div class="board">
-    <div class="cell" id="1"></div>
-    <div class="cell" id="2"></div>
-    <div class="cell" id="3"></div>
-    <div class="cell" id="4"></div>
-    <div class="cell" id="5"></div>
-    <div class="cell" id="6"></div>
-    <div class="cell" id="7"></div>
-    <div class="cell" id="8"></div>
-    <div class="cell" id="9"></div>
+    <div class="cell" id="cell-1" data-value="O"></div>
+    <div class="cell" id="cell-2" data-value="X"></div>
+    <div class="cell" id="cell-3" data-value="3"></div>
+    <div class="cell" id="cell-4" data-value="4"></div>
+    <div class="cell" id="cell-5" data-value="5"></div>
+    <div class="cell" id="cell-6" data-value="6"></div>
+    <div class="cell" id="cell-7" data-value="7"></div>
+    <div class="cell" id="cell-8" data-value="8"></div>
+    <div class="cell" id="cell-9" data-value="9"></div>
   </div>
   <div class="playing-info">
-    <div class="player-1">Player 1<span>(1)</span></div>
-    <div class="player-2">Player 2<span>(3)</span></div>
+    <h2 class="info-score">Score</h2> <br>
+    <div class="player-scores">
+      <div class="player-1">
+        <p id="p1-name-score"> Player 1</p>
+        <p id="p1-score">Score</p>
+      </div>
+      <div class="player-2">
+        <p id="p2-name-score">Player 2</p>
+        <p id="p2-score">Score</p>
+      </div>
+    </div>
   </div>
 </section>
 <script type="text/javascript" src="main.js"></script>
 </body>
 </html>
+

@@ -47,10 +47,11 @@ table {
 
 .player-input-section {
   padding: 20px;
-  width: 50%;
+  width: 60%;
   margin: auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
 .player-input-section:hover{
   transition: all .2s ease-in-out;
   transform: scale(1.05);
@@ -100,3 +101,40 @@ table {
 .cell {
   border: 5px solid #000;
 }
+
+.new-game-button {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  width: 100%;
+}
+
+.playing-info {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.player-scores {
+  display: flex; 
+  padding: 10px; 
+}
+
+.info-score {
+  width: 100%;
+  padding: 10px;
+}
+.player-1 {
+  border-right: 3px solid black;
+  padding-right: 20px;
+}
+
+.player-2 {
+  padding-left: 20px;
+}
+
