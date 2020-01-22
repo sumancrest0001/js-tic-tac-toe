@@ -5,8 +5,33 @@
   <title>Tic Tac Toe</title>
 </head>
 <body>
-<h1> This is an index page</h1>
-
+<section class="player-input-section">
+  <form class="input-form">
+      <input type="text" id="player-1-name"  class="form-input" placeholder="Enter Player-1 Name"  required>
+      <input type="text" id="player-1-symbol"  class="form-input" placeholder="Choose X or O" required>
+      <input type="text" id="player-2-name"  class="form-input" placeholder="Enter Player-2 Name"  required>
+      <input type="text" id="player-2-symbol"  class="form-input" placeholder="Choose X or O" required>
+  </form>
+  <button class="submit-button">Set Players</button>
+</section>
+<section class="playboard">
+  <div class="buttons">New Game</div>
+  <div class="board">
+    <div class="cell" id="1"></div>
+    <div class="cell" id="2"></div>
+    <div class="cell" id="3"></div>
+    <div class="cell" id="4"></div>
+    <div class="cell" id="5"></div>
+    <div class="cell" id="6"></div>
+    <div class="cell" id="7"></div>
+    <div class="cell" id="8"></div>
+    <div class="cell" id="9"></div>
+  </div>
+  <div class="playing-info">
+    <div class="player-1">Player 1<span>(1)</span></div>
+    <div class="player-2">Player 2<span>(3)</span></div>
+  </div>
+</section>
 <script type="text/javascript" src="main.js"></script>
 </body>
 </html>
