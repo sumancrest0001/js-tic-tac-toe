@@ -99,6 +99,9 @@ table {
   grid-template-rows: 150px 150px 150px;
 }
 .cell {
+  text-align: center;
+  font-size: 150px;
+  color: #fff;
   border: 5px solid #000;
 }
 
@@ -121,8 +124,8 @@ table {
 }
 
 .player-scores {
-  display: flex; 
-  padding: 10px; 
+  display: flex;
+  padding: 10px;
 }
 
 .info-score {
