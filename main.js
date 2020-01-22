@@ -71,15 +71,15 @@ function displaySym () {
 }
 
 function selectCell(event) {
-  let x = event.currentTarget;
-  console.log(x);
+  if (event.target.className === 'cell') {
+	gameBoard[event.target.dataset.value] = player.symbol; 
+	displaySym();
+  }; 
 }
 
-const allCells = document.querySelector('.cell');
-for(let i = 0; i < allCells.length; i++){
-  // Console: print the clicked <p> element
-  allCells[i].addEventListener('click', selectCell, false);
-}
+var allCells = document.querySelector('.board');
+
+allCells.addEventListener('click', selectCell);
 
 displaySym();
 
