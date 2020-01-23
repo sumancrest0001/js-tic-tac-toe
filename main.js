@@ -1,7 +1,14 @@
 
+let dataController = (function(){
+  const player = (name, symbol) => {
+    return {name, symbol, playerChoices};
+  };
+})();
+
+let UIController = (function(){
   const dom = {
-    setPlayersButton: document.getElementsByClassName('submit-button'),
-    newGameButton: document.getElementsByClassName('new-game-button'),
+    setPlayersButton: document.querySelector('.submit-button'),
+    newGameButton: document.querySelector('.new-game-button'),
     cell1: document.getElementById('cell-1'),
     cell2: document.getElementById('cell-2'),
     cell3: document.getElementById('cell-3'),
@@ -38,14 +45,77 @@
     val9: dom.cell9.dataset.value,
   };
 
-  const getPlayers = {
-    player1Name: document.getElementById('player-1-name').value,
-    player1Sym: document.getElementById('player-1-symbol').value,
-    player2Name: document.getElementById('player-2-name').value,
-    player2Sym: document.getElementById('player-2-symbol').value,
+  return {
+     displaySym: function(gameBoardArr) {
+      gameBoard.cell1.textContent = gameBoardArr[0];
+      gameBoard.cell2.textContent = gameBoardArr[1];
+      gameBoard.cell3.textContent = gameBoardArr[2];
+      gameBoard.cell4.textContent = gameBoardArr[3];
+      gameBoard.cell5.textContent = gameBoardArr[4];
+      gameBoard.cell6.textContent = gameBoardArr[5];
+      gameBoard.cell7.textContent = gameBoardArr[6];
+      gameBoard.cell8.textContent = gameBoardArr[7];
+      gameBoard.cell9.textContent = gameBoardArr[8];
+    },
+    getPlayers: function(){
+      return{
+        player1Name: document.getElementById('player-1-name').value,
+        player1Sym: document.getElementById('player-1-symbol').value,
+        player2Name: document.getElementById('player-2-name').value,
+        player2Sym: document.getElementById('player-2-symbol').value,
+      };
+    },
+
+    displayPlayerInfo: function(players){
+      dom.p1NameScore.textContent = `${players.player1Name}(${players.player1Sym})`;
+      dom.p2NameScore.textContent = `${players.player2Name}(${players.player2Sym})`;
+    },
+
+    getDOMstrings: function(){
+      return dom;
+    }
+  };
+})();
+
+let gameLogic = (function(UICtrl){
+  const DOM = UICtrl.getDOMstrings();
+  const gameBoardArr = [ 'x', 'x', 'o', '', '', '', '', '', ''];
+  let eventHandler = function(){
+    DOM.setPlayersButton.addEventListener('click', setPlayers);
+    const allCells = document.querySelector('.board');
+    allCells.addEventListener('click', selectCell);
+  };
+  // Player factory function need to be defined.
+  const createPlayers = function(playersInfo){
+    const player1 = Player(player1Name, player1Sym, true);
+    const player2 = Player(player1Name, player1Sym);
   };
 
-const player = (name, symbol) => {
+  const setPlayers = function(){
+     let inputs;
+     inputs = UICtrl.getPlayers();
+     //createPlayers(inputs);
+     UICtrl.displayPlayerInfo(inputs);
+  };
+
+   const selectCell = function(event) {
+    if (event.target.className === 'cell') {
+  	const clickedCell = event.target.dataset.value;
+  	console.log(clickedCell);
+    }
+  };
+
+  return {
+    init: function(){
+      UICtrl.displaySym(gameBoardArr);
+      eventHandler();
+    }
+  };
+
+})(UIController);
+
+gameLogic.init();
+ /*const player = (name, symbol) => {
   const playerChoices= [];
   return {name, symbol, playerChoices};
 };
@@ -58,28 +128,16 @@ let setPlayers = function() {
 
 const gameBoardArr = [ 'x', 'x', 'o', '', '', '', '', '', ''];
 
-function displaySym () {
-  gameBoard.cell1.textContent = gameBoardArr[0];
-  gameBoard.cell2.textContent = gameBoardArr[1];
-  gameBoard.cell3.textContent = gameBoardArr[2];
-  gameBoard.cell4.textContent = gameBoardArr[3];
-  gameBoard.cell5.textContent = gameBoardArr[4];
-  gameBoard.cell6.textContent = gameBoardArr[5];
-  gameBoard.cell7.textContent = gameBoardArr[6];
-  gameBoard.cell8.textContent = gameBoardArr[7];
-  gameBoard.cell9.textContent = gameBoardArr[8];
-}
+
 
 function selectCell(event) {
   if (event.target.className === 'cell') {
-	gameBoard[event.target.dataset.value] = player.symbol; 
+	gameBoard[event.target.dataset.value] = player.symbol;
 	displaySym();
-  }; 
+  };
 }
 
-var allCells = document.querySelector('.board');
 
-allCells.addEventListener('click', selectCell);
 
 displaySym();
 
@@ -93,4 +151,4 @@ const gameLogic = function() {
 };
 
 const demo = gameLogic.setPlayers;
-//console.log(demo);
+//console.log(demo); */
