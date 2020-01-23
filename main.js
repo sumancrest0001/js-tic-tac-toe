@@ -21,6 +21,7 @@ let UIController = (function(){
     p2NameScore: document.getElementById('p2-name-score'),
     p1Score: document.getElementById('p1-score'),
     p2Score: document.getElementById('p2-score'),
+    form: document.querySelector('.input-form'),
   };
 
   const gameBoard = {
@@ -33,15 +34,6 @@ let UIController = (function(){
     cell7: dom.cell7,
     cell8: dom.cell8,
     cell9: dom.cell9,
-    val1: dom.cell1.dataset.value,
-    val2: dom.cell2.dataset.value,
-    val3: dom.cell3.dataset.value,
-    val4: dom.cell4.dataset.value,
-    val5: dom.cell5.dataset.value,
-    val6: dom.cell6.dataset.value,
-    val7: dom.cell7.dataset.value,
-    val8: dom.cell8.dataset.value,
-    val9: dom.cell9.dataset.value,
   };
 
   return {
@@ -73,27 +65,19 @@ let UIController = (function(){
     getDOMstrings: function(){
       return dom;
     }
-
-      // updateBoard() {
-
-      // }
-
-      // resetBoard {
-
-      // }
   };
 })();
 
 let gameLogic = (function(UICtrl){
   const DOM = UICtrl.getDOMstrings();
-  const gameBoardArr = [ '', '', '', '', '', '', '', '', ''];
+  let gameBoardArr = [ '', '', '', '', '', '', '', '', ''];
   let player1, player2, current;
   let eventHandler = function(){
     DOM.setPlayersButton.addEventListener('click', setPlayers);
     const allCells = document.querySelector('.board');
     allCells.addEventListener('click', selectCell);
   };
-  //Player factory function need to be defined.
+ 
   const createPlayers = function(playersInfo){
     player1 = player(playersInfo.player1Name, playersInfo.player1Sym, true);
     player2 = player(playersInfo.player2Name, playersInfo.player2Sym);
@@ -104,6 +88,7 @@ let gameLogic = (function(UICtrl){
     const inputs = UICtrl.getPlayers();
     createPlayers(inputs);
     UICtrl.displayPlayerInfo(inputs);
+    DOM.form.reset();
   };
 
   const currrentPlayer = () => {
@@ -128,9 +113,39 @@ let gameLogic = (function(UICtrl){
     gameBoardArr[clickedCell - 1] = current.symbol;
     UICtrl.displaySym(gameBoardArr);
     togglePlayer();
+    console.log(gameBoardArr[0  ])
     }
   };
 
+  const resetBoard = () => {
+    gameBoardArr = [ '', '', '', '', '', '', '', '', ''];
+  };
+
+  const checkWinner = (gameBoardArr) => {
+    string = gameBoardArr.split('');
+    if (string === winnerXComb) {
+      if (player1.symbol === 'X') {
+         `Congratulations! ${player1Name} wins!`
+      } else {
+         `Congratulations! ${player2Name} wins!`
+      } else if (string === winnerOComb) {
+        if (player1.symbol === 'O') {
+           `Congratulations! ${player1Name} wins!`
+        } else {
+           `Congratulations! ${player2Name} wins!`
+        }
+      }
+    }
+  }
+
+//   const winnerXComb = (current) => {
+//     string = gameBoardArr.split('');
+//     if ( gameBoardArr.slice(0,3) === [`${current.symbol}`, `${current.symbol}`, `${current.symbol}`] ||
+//          gameBoardArr.slice(3,3) == [`${current.symbol}`, `${current.symbol}`, `${current.symbol}`] ||
+//          gameBoardArr.slice(6,3) == [`${current.symbol}`, `${current.symbol}`, `${current.symbol}`] ||
+//          gameBoardArr == [`${current.symbol}`, /./, /./, `${current.symbol}`]
+
+// )
   return {
     init: function(){
       UICtrl.displaySym(gameBoardArr);
@@ -141,40 +156,3 @@ let gameLogic = (function(UICtrl){
 })(UIController);
 
 gameLogic.init();
- /*const player = (name, symbol) => {
-  const playerChoices= [];
-  return {name, symbol, playerChoices};
-};
-
-let setPlayers = function() {
-  const player1 = player(getPlayers.player1Name, getPlayers.player1Sym);
-  const player2 = player(getPlayers.player2Name, getPlayers.player2Sym);
-  return {player1, player2};
-}
-
-const gameBoardArr = [ 'x', 'x', 'o', '', '', '', '', '', ''];
-
-
-
-function selectCell(event) {
-  if (event.target.className === 'cell') {
-	gameBoard[event.target.dataset.value] = player.symbol;
-	displaySym();
-  };
-}
-
-
-
-displaySym();
-
-const gameLogic = function() {
-
-  const eventHandler = function(){
-     dom.setPlayersButton.addEventListener('click', setPlayers);
-  };
-
-
-};
-
-const demo = gameLogic.setPlayers;
-//console.log(demo); */
