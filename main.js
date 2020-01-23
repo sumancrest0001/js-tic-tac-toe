@@ -1,9 +1,8 @@
 
-let dataController = (function(){
-  const player = (name, symbol) => {
-    return {name, symbol, playerChoices};
-  };
-})();
+const player = (name, symbol, isTurn = false) => {
+  playerChoices = [];
+  return {name, symbol, isTurn, playerChoices};
+};
 
 let UIController = (function(){
   const dom = {
@@ -74,6 +73,14 @@ let UIController = (function(){
     getDOMstrings: function(){
       return dom;
     }
+
+      // updateBoard() {
+        
+      // }
+
+      // resetBoard {
+
+      // }
   };
 })();
 
@@ -85,22 +92,30 @@ let gameLogic = (function(UICtrl){
     const allCells = document.querySelector('.board');
     allCells.addEventListener('click', selectCell);
   };
-  // Player factory function need to be defined.
+  //Player factory function need to be defined.
+  
   const createPlayers = function(playersInfo){
-    const player1 = Player(player1Name, player1Sym, true);
-    const player2 = Player(player1Name, player1Sym);
-  };
+    const player1 = player(playersInfo.player1Name, playersInfo.player1Sym, true);
+    const player2 = player(playersInfo.player2Name, playersInfo.player2Sym);
 
+    return {player1, player2};
+  };
+  
   const setPlayers = function(){
-     let inputs;
-     inputs = UICtrl.getPlayers();
-     //createPlayers(inputs);
-     UICtrl.displayPlayerInfo(inputs);
+    const inputs = UICtrl.getPlayers();
+    createPlayers(inputs);
+    UICtrl.displayPlayerInfo(inputs);
   };
 
-   const selectCell = function(event) {
+  const currrentPlayer = () => {
+    players = createPlayers()
+    p1.isTurn == true ? p1 : p2;
+  };
+
+  const selectCell = function(event) {
     if (event.target.className === 'cell') {
-  	const clickedCell = event.target.dataset.value;
+    const clickedCell = event.target.dataset.value;
+    gameBoardArr[clickedCell - 1] = currrentPlayer.symbol;
   	console.log(clickedCell);
     }
   };
@@ -109,6 +124,7 @@ let gameLogic = (function(UICtrl){
     init: function(){
       UICtrl.displaySym(gameBoardArr);
       eventHandler();
+      currrentPlayer();
     }
   };
 
