@@ -75,7 +75,7 @@ let UIController = (function(){
     }
 
       // updateBoard() {
-        
+
       // }
 
       // resetBoard {
@@ -86,21 +86,20 @@ let UIController = (function(){
 
 let gameLogic = (function(UICtrl){
   const DOM = UICtrl.getDOMstrings();
-  const gameBoardArr = [ 'x', 'x', 'o', '', '', '', '', '', ''];
+  const gameBoardArr = [ '', '', '', '', '', '', '', '', ''];
+  let player1, player2, current;
   let eventHandler = function(){
     DOM.setPlayersButton.addEventListener('click', setPlayers);
     const allCells = document.querySelector('.board');
     allCells.addEventListener('click', selectCell);
   };
   //Player factory function need to be defined.
-  
   const createPlayers = function(playersInfo){
-    const player1 = player(playersInfo.player1Name, playersInfo.player1Sym, true);
-    const player2 = player(playersInfo.player2Name, playersInfo.player2Sym);
+    player1 = player(playersInfo.player1Name, playersInfo.player1Sym, true);
+    player2 = player(playersInfo.player2Name, playersInfo.player2Sym);
 
-    return {player1, player2};
   };
-  
+
   const setPlayers = function(){
     const inputs = UICtrl.getPlayers();
     createPlayers(inputs);
@@ -108,15 +107,27 @@ let gameLogic = (function(UICtrl){
   };
 
   const currrentPlayer = () => {
-    players = createPlayers()
-    p1.isTurn == true ? p1 : p2;
+   current = player1.isTurn === true ? player1 : player2;
+  };
+
+
+  const togglePlayer = () => {
+    if(current === player1) {
+      player1.isTurn = false;
+      player2.isTurn = true;
+    } else {
+      player2.isTurn = false;
+      player1.isTurn = true;
+    }
   };
 
   const selectCell = function(event) {
     if (event.target.className === 'cell') {
     const clickedCell = event.target.dataset.value;
-    gameBoardArr[clickedCell - 1] = currrentPlayer.symbol;
-  	console.log(clickedCell);
+    currrentPlayer();
+    gameBoardArr[clickedCell - 1] = current.symbol;
+    UICtrl.displaySym(gameBoardArr);
+    togglePlayer();
     }
   };
 
@@ -124,7 +135,6 @@ let gameLogic = (function(UICtrl){
     init: function(){
       UICtrl.displaySym(gameBoardArr);
       eventHandler();
-      currrentPlayer();
     }
   };
 
