@@ -105,12 +105,12 @@ table {
   border: 5px solid #000;
 }
 
-.new-game-button {
+.new-round-button, .reset-game-button {
   font-size: 2rem;
   text-align: center;
   font-weight: bold;
   padding: 10px;
-  width: 100%;
+  width: 49.5%;
 }
 
 .playing-info {

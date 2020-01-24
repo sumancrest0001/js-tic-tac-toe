@@ -9,7 +9,8 @@ const player = (name, symbol, isTurn = false, score = 0) => {
 const UIController = (() => {
   const dom = {
     setPlayersButton: document.querySelector('.submit-button'),
-    newGameBtn: document.querySelector('.new-game-button'),
+    newGameBtn: document.querySelector('.new-round-button'),
+    resetGameBtn: document.querySelector('.reset-game-button'),
     cell1: document.getElementById('cell-1'),
     cell2: document.getElementById('cell-2'),
     cell3: document.getElementById('cell-3'),
@@ -38,15 +39,6 @@ const UIController = (() => {
     cell7: dom.cell7,
     cell8: dom.cell8,
     cell9: dom.cell9,
-    val1: dom.cell1.dataset.value,
-    val2: dom.cell2.dataset.value,
-    val3: dom.cell3.dataset.value,
-    val4: dom.cell4.dataset.value,
-    val5: dom.cell5.dataset.value,
-    val6: dom.cell6.dataset.value,
-    val7: dom.cell7.dataset.value,
-    val8: dom.cell8.dataset.value,
-    val9: dom.cell9.dataset.value,
   };
 
   return {
@@ -74,9 +66,14 @@ const UIController = (() => {
       };
     },
 
-    displayPlayerInfo(players) {
-      dom.p1NameScore.textContent = `${players.player1Name}(${players.player1Sym})`;
-      dom.p2NameScore.textContent = `${players.player2Name}(${players.player2Sym})`;
+    displayPlayerInfo(players = null) {
+      if(players === null) {
+        dom.p1NameScore.textContent = 'player1';
+        dom.p2NameScore.textContent = 'player2';
+      } else {
+        dom.p1NameScore.textContent = `${players.player1Name}(${players.player1Sym})`;
+        dom.p2NameScore.textContent = `${players.player2Name}(${players.player2Sym})`;
+      }
     },
 
     displayResult(result) {
@@ -88,10 +85,6 @@ const UIController = (() => {
     },
 
     displayScore(player1, player2) {
-      console.log(player1);
-      console.log(player2);
-      console.log(dom.p1Score);
-      console.log(dom.p2Score);
       dom.p1Score.textContent = player1;
       dom.p2Score.textContent = player2;
     },
@@ -112,7 +105,7 @@ const gameLogic = ((UICtrl) => {
   const DOM = UICtrl.getDOMstrings();
   let gameBoardArr = ['', '', '', '', '', '', '', '', ''];
   let player1; let player2; let current; let passivePlayer;
-  let counter = 1;
+  let counter = 0;
 
   const createPlayers = function (playersInfo) {
     player1 = player(playersInfo.player1Name, playersInfo.player1Sym, true);
@@ -123,6 +116,7 @@ const gameLogic = ((UICtrl) => {
     const inputs = UICtrl.getPlayers();
     createPlayers(inputs);
     UICtrl.displayPlayerInfo(inputs);
+    UICtrl.displayScore(player1.score, player2.score);
   };
 
   const currentPlayer = () => {
@@ -172,15 +166,36 @@ const gameLogic = ((UICtrl) => {
     if (counter >= 5 && checkWinner() === true) {
       UICtrl.displayResult(current);
       current.score += 1;
+      UICtrl.displayScore(player1.score, player2.score);
     } else if (counter === 9 && checkDraw() === true) {
       UICtrl.displayResult(true);
     }
   };
 
-  const newGame = () => {
+  const resetValues= ()=> {
+    counter = 0;
+    player1.isTurn = true;
+    player2.isTurn = false;
+    player1.playerChoices = [];
+    player2.playerChoices = [];
+  };
+
+  const newRound = () => {
     resetBoard();
+    resetValues();
     UICtrl.displaySym(gameBoardArr);
     UICtrl.displayScore(player1.score, player2.score);
+  };
+
+  const resetGame = () => {
+    player1 = {};
+    console.log(player1)
+    player2 = {};
+    resetBoard();
+    counter = 0;
+    init();
+    UICtrl.displayScore(0, 0);
+    UICtrl.displayPlayerInfo();
   };
 
   const playerSelection = (event) => {
@@ -219,16 +234,20 @@ const gameLogic = ((UICtrl) => {
   const eventHandler = () => {
     DOM.setPlayersButton.addEventListener('click', setPlayers);
     DOM.board.addEventListener('click', playerSelection);
-    DOM.newGameBtn.addEventListener('click', newGame);
+    DOM.newGameBtn.addEventListener('click', newRound);
+    DOM.resetGameBtn.addEventListener('click', resetGame);
+  };
+
+  const init = () => {
+    UICtrl.displaySym(gameBoardArr);
+    eventHandler();
+    // gameOn();
   };
 
   return {
-    init() {
-      UICtrl.displaySym(gameBoardArr);
-      eventHandler();
-      // gameOn();
-    },
+    init
   };
+
 })(UIController);
 
 gameLogic.init();
