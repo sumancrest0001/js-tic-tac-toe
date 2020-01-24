@@ -137,7 +137,7 @@ const gameLogic = ((UICtrl) => {
     }
   };
 
-  const selectCell = function (event) {
+  const selectCell = (event) => {
     if (event.target.className === 'cell') {
       const clickedCell = event.target.dataset.value;
       currrentPlayer();
@@ -150,20 +150,13 @@ const gameLogic = ((UICtrl) => {
     }
   };
 
-  const result = function () {
-    if (counter >= 5 && checkWinner() === true) {
-      UICtrl.displayResult(current);
-    } else if (counter === 9 && checkDraw() === true) {
-      UICtrl.displayResult(true);
-    }
-  };
-
-  const checkDraw = function () {
-    if (!gameBoardArr.includes('') && checkWinner() !== true) {
-      return true;
-    }
-    return false;
-  };
+  //selectCell
+  //currentPlayer()
+  //changeCellValue()
+  //UIctrol.diplaySym
+  //result
+  //togglePlayer
+  //UIctrl.changePlayer
 
   const checkWinner = () => {
     const winingComposition = [['1', '2', '3'], ['1', '4', '7'], ['1', '5', '9'], ['2', '5', '8'], ['3', '6', '9'], ['4', '5', '6'], ['7', '8', '9'], ['3', '5', '7']];
@@ -181,6 +174,21 @@ const gameLogic = ((UICtrl) => {
     } return false;
   };
 
+  const checkDraw = () => {
+    if (!gameBoardArr.includes('') && checkWinner() !== true) {
+      return true;
+    }
+    return false;
+  };
+
+  const result = () => {
+    if (counter >= 5 && checkWinner() === true) {
+      UICtrl.displayResult(current);
+    } else if (counter === 9 && checkDraw() === true) {
+      UICtrl.displayResult(true);
+    }
+  };
+
   return {
     init() {
       UICtrl.displaySym(gameBoardArr);
@@ -190,38 +198,3 @@ const gameLogic = ((UICtrl) => {
 })(UIController);
 
 gameLogic.init();
-/* const player = (name, symbol) => {
-  const playerChoices= [];
-  return {name, symbol, playerChoices};
-};
-
-let setPlayers = function() {
-  const player1 = player(getPlayers.player1Name, getPlayers.player1Sym);
-  const player2 = player(getPlayers.player2Name, getPlayers.player2Sym);
-  return {player1, player2};
-}
-
-const gameBoardArr = [ 'x', 'x', 'o', '', '', '', '', '', ''];
-
-
-function selectCell(event) {
-  if (event.target.className === 'cell') {
-	gameBoard[event.target.dataset.value] = player.symbol;
-	displaySym();
-  };
-}
-
-
-displaySym();
-
-const gameLogic = function() {
-
-  const eventHandler = function(){
-     dom.setPlayersButton.addEventListener('click', setPlayers);
-  };
-
-
-};
-
-const demo = gameLogic.setPlayers;
-//console.log(demo); */
