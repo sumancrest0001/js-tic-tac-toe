@@ -20,20 +20,25 @@ time, mark, audio, video {
     vertical-align: baseline;
     box-sizing: border-box;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
+
 body {
   line-height: 1;
 }
+
 ol, ul {
   list-style: none;
 }
+
 blockquote, q {
   quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
@@ -74,6 +79,18 @@ table {
   font-size: 1.2rem;
 }
 
+.invisible {
+  display: none;
+}
+
+.red-alert {
+  border: red solid 1px;
+}
+
+.delete-alert {
+  border: none;
+}
+
 .submit-button {
   display: flex;
   align-self: center;
@@ -98,6 +115,7 @@ table {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 150px 150px 150px;
 }
+
 .cell {
   text-align: center;
   font-size: 150px;
@@ -135,13 +153,35 @@ table {
   padding: 10px;
   padding-bottom: 0;
 }
+
 .player-1 {
   border-right: 3px solid black;
 }
+
 .player-1, .player-2 {
   width: 50%;
 }
 
 .active-player {
   background-color: #F5AD42;
+}
+
+#messages {
+  display: block;
+  margin-top: 20px;
+  padding: 20px;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.visible {
+  display: block !important;
+}
+
+.alert-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
 }

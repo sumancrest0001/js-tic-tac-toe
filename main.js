@@ -27,6 +27,8 @@ const UIController = (() => {
     p1Section: document.querySelector('.player-1'),
     p2Section: document.querySelector('.player-2'),
     board: document.querySelector('.board'),
+    form: document.querySelector('.input-form'),
+    messages: document.getElementById('messages'),
   };
 
   const gameBoard = {
@@ -67,7 +69,13 @@ const UIController = (() => {
     },
 
     validatePlayerSymbol() {
-      if (this.getPlayers().player1Sym === this.getPlayers().player2Sym) return false;
+      if (this.getPlayers().player1Sym === this.getPlayers().player2Sym) {
+        dom.messages.classList.add('alert-message');
+        dom.messages.textContent = 'Choose another symbol';
+        return false;
+      }
+      document.getElementById('player-1-symbol').classList.toggle('delete-alert');
+      dom.messages.classList.toggle('invisible');
       return true;
     },
 
@@ -83,9 +91,15 @@ const UIController = (() => {
 
     displayResult(result) {
       if (result === true) {
-        alert('This is a draw');
+        const message = dom.messages;
+        message.textContent = 'This is a draw';
+        message.classList.toggle('visible');
+        message.classList.toggle('success-message');
       } else {
-        alert(`Congratulations ${result.name}! You won the game`);
+        const message = dom.messages;
+        message.textContent = `Congratulations ${result.name}! You won the game`;
+        message.classList.toggle('visible');
+        message.classList.toggle('success-message');
       }
     },
 
@@ -108,6 +122,13 @@ const UIController = (() => {
       return dom;
     },
 
+    clearForm() {
+      dom.form.reset();
+    },
+
+    hideForm() {
+      dom.form.classList.toggle('invisible');
+    },
   };
 })();
 
@@ -128,8 +149,8 @@ const gameLogic = ((UICtrl) => {
       createPlayers(inputs);
       UICtrl.displayPlayerInfo(inputs);
       UICtrl.displayScore(player1.score, player2.score);
-    } else {
-      alert('Choose another symbol');
+      UICtrl.clearForm();
+      UICtrl.hideForm();
     }
   };
 
@@ -176,16 +197,6 @@ const gameLogic = ((UICtrl) => {
     gameBoardArr = ['', '', '', '', '', '', '', '', ''];
   };
 
-  const result = () => {
-    if (counter >= 5 && checkWinner() === true) {
-      UICtrl.displayResult(current);
-      current.score += 1;
-      UICtrl.displayScore(player1.score, player2.score);
-    } else if (counter === 9 && checkDraw() === true) {
-      UICtrl.displayResult(true);
-    }
-  };
-
   const resetValues = () => {
     counter = 0;
     player1.isTurn = true;
@@ -200,6 +211,17 @@ const gameLogic = ((UICtrl) => {
     resetValues();
     UICtrl.displaySym(gameBoardArr);
     UICtrl.displayScore(player1.score, player2.score);
+  };
+
+  const result = () => {
+    if (counter >= 5 && checkWinner() === true) {
+      UICtrl.displayResult(current);
+      current.score += 1;
+      UICtrl.displayScore(player1.score, player2.score);
+      newRound();
+    } else if (counter === 9 && checkDraw() === true) {
+      UICtrl.displayResult(true);
+    }
   };
 
   const resetGame = () => {
