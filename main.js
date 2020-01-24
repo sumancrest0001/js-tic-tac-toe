@@ -56,9 +56,9 @@ const UIController = (() => {
 
     getPlayers() {
       const player1Name = document.getElementById('player-1-name').value;
-      const player1Sym = document.getElementById('player-1-symbol').value;
+      const player1Sym = document.getElementById('player-1-symbol').value.toUpperCase();
       const player2Name = document.getElementById('player-2-name').value;
-      const player2Sym = document.getElementById('player-2-symbol').value;
+      const player2Sym = document.getElementById('player-2-symbol').value.toUpperCase();
       document.querySelector('.player-1').classList.add(`${player1Name}`);
       document.querySelector('.player-2').classList.add(`${player2Name}`);
       return {
@@ -66,8 +66,13 @@ const UIController = (() => {
       };
     },
 
+    validatePlayerSymbol() {
+      if (this.getPlayers().player1Sym === this.getPlayers().player2Sym) return false;
+      return true;
+    },
+
     displayPlayerInfo(players = null) {
-      if(players === null) {
+      if (players === null) {
         dom.p1NameScore.textContent = 'player1';
         dom.p2NameScore.textContent = 'player2';
       } else {
@@ -112,16 +117,20 @@ const gameLogic = ((UICtrl) => {
   let player1; let player2; let current; let passivePlayer;
   let counter = 0;
 
-  const createPlayers = function (playersInfo) {
+  const createPlayers = (playersInfo) => {
     player1 = player(playersInfo.player1Name, playersInfo.player1Sym, true);
     player2 = player(playersInfo.player2Name, playersInfo.player2Sym);
   };
 
-  const setPlayers = function () {
+  const setPlayers = () => {
     const inputs = UICtrl.getPlayers();
-    createPlayers(inputs);
-    UICtrl.displayPlayerInfo(inputs);
-    UICtrl.displayScore(player1.score, player2.score);
+    if (UICtrl.validatePlayerSymbol() === true) {
+      createPlayers(inputs);
+      UICtrl.displayPlayerInfo(inputs);
+      UICtrl.displayScore(player1.score, player2.score);
+    } else {
+      alert('Choose another symbol');
+    }
   };
 
   const currentPlayer = () => {
@@ -130,7 +139,7 @@ const gameLogic = ((UICtrl) => {
   };
 
   const togglePlayer = () => {
-    counter++;
+    counter += 1;
     if (current === player1) {
       player1.isTurn = false;
       player2.isTurn = true;
@@ -174,12 +183,10 @@ const gameLogic = ((UICtrl) => {
       UICtrl.displayScore(player1.score, player2.score);
     } else if (counter === 9 && checkDraw() === true) {
       UICtrl.displayResult(true);
-    } else {
-      return false;
     }
   };
 
-  const resetValues= ()=> {
+  const resetValues = () => {
     counter = 0;
     player1.isTurn = true;
     player2.isTurn = false;
@@ -200,14 +207,15 @@ const gameLogic = ((UICtrl) => {
   };
 
   const cellValidation = (cell) => {
-    if(gameBoardArr[cell-1] != '') return false;
+    if (gameBoardArr[cell - 1] !== '') return false;
+    return true;
   };
 
   const playerSelection = (event) => {
     if (event.target.className === 'cell') {
       const clickedCell = event.target.dataset.value;
       currentPlayer();
-      if(cellValidation(clickedCell) !== false) {
+      if (cellValidation(clickedCell) !== false) {
         gameBoardArr[clickedCell - 1] = current.symbol;
         current.playerChoices.push(clickedCell);
         UICtrl.displaySym(gameBoardArr);
@@ -220,24 +228,6 @@ const gameLogic = ((UICtrl) => {
     }
   };
 
-  // const playerSelection = (event) => {
-  //   if (event.target.className === 'cell') {
-  //     const clickedCell = event.target.dataset.value;
-  //     currentPlayer();
-  //     gameBoardArr[clickedCell - 1] = current.symbol;
-  //     current.playerChoices.push(clickedCell);
-  //   }
-  // };
-
-  // const gameOn = (event) => {
-  //   playerSelection(event);
-  //   currentPlayer();
-  //   UICtrl.displaySym(gameBoardArr);
-  //   result();
-  //   togglePlayer();
-  //   UICtrl.changePlayer(current, passivePlayer);
-  // };
-
   const eventHandler = () => {
     DOM.setPlayersButton.addEventListener('click', setPlayers);
     DOM.board.addEventListener('click', playerSelection);
@@ -248,13 +238,11 @@ const gameLogic = ((UICtrl) => {
   const init = () => {
     UICtrl.displaySym(gameBoardArr);
     eventHandler();
-    // gameOn();
   };
 
   return {
-    init
+    init,
   };
-
 })(UIController);
 
 gameLogic.init();
