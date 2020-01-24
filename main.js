@@ -94,6 +94,11 @@ const UIController = (() => {
       document.querySelector(`.${anotherPlayer.name}`).classList.toggle('active-player');
     },
 
+    resetPlayers() {
+      dom.p1Section.classList.add('active-player');
+      dom.p2Section.classList.remove('active-player');
+    },
+
     getDOMstrings() {
       return dom;
     },
@@ -169,6 +174,8 @@ const gameLogic = ((UICtrl) => {
       UICtrl.displayScore(player1.score, player2.score);
     } else if (counter === 9 && checkDraw() === true) {
       UICtrl.displayResult(true);
+    } else {
+      return false;
     }
   };
 
@@ -178,6 +185,7 @@ const gameLogic = ((UICtrl) => {
     player2.isTurn = false;
     player1.playerChoices = [];
     player2.playerChoices = [];
+    UICtrl.resetPlayers();
   };
 
   const newRound = () => {
@@ -188,28 +196,27 @@ const gameLogic = ((UICtrl) => {
   };
 
   const resetGame = () => {
-    player1 = {};
-    console.log(player1)
-    player2 = {};
-    resetBoard();
-    counter = 0;
-    init();
-    UICtrl.displayScore(0, 0);
-    UICtrl.displayPlayerInfo();
+    location.reload();
+  };
+
+  const cellValidation = (cell) => {
+    if(gameBoardArr[cell-1] != '') return false;
   };
 
   const playerSelection = (event) => {
     if (event.target.className === 'cell') {
       const clickedCell = event.target.dataset.value;
       currentPlayer();
-      gameBoardArr[clickedCell - 1] = current.symbol;
-      current.playerChoices.push(clickedCell);
-      UICtrl.displaySym(gameBoardArr);
-      setTimeout(() => {
-        result();
-      }, 20);
-      togglePlayer();
-      UICtrl.changePlayer(current, passivePlayer);
+      if(cellValidation(clickedCell) !== false) {
+        gameBoardArr[clickedCell - 1] = current.symbol;
+        current.playerChoices.push(clickedCell);
+        UICtrl.displaySym(gameBoardArr);
+        setTimeout(() => {
+          result();
+        }, 20);
+        togglePlayer();
+        UICtrl.changePlayer(current, passivePlayer);
+      }
     }
   };
 
