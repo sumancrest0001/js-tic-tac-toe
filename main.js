@@ -21,6 +21,8 @@ let UIController = (function(){
     p2NameScore: document.getElementById('p2-name-score'),
     p1Score: document.getElementById('p1-score'),
     p2Score: document.getElementById('p2-score'),
+    p1Section: document.querySelector('.player-1'),
+    p2Section: document.querySelector('.player-2'),
   };
 
   const gameBoard = {
@@ -57,11 +59,14 @@ let UIController = (function(){
       gameBoard.cell9.textContent = gameBoardArr[8];
     },
     getPlayers: function(){
+      const player1Name = document.getElementById('player-1-name').value;
+      const player1Sym = document.getElementById('player-1-symbol').value;
+      const player2Name = document.getElementById('player-2-name').value;
+      const player2Sym = document.getElementById('player-2-symbol').value;
+      document.querySelector('.player-1').classList.add(`${player1Name}`);
+      document.querySelector('.player-2').classList.add(`${player2Name}`);
       return{
-        player1Name: document.getElementById('player-1-name').value,
-        player1Sym: document.getElementById('player-1-symbol').value,
-        player2Name: document.getElementById('player-2-name').value,
-        player2Sym: document.getElementById('player-2-symbol').value,
+        player1Name, player1Sym, player2Sym, player2Name
       };
     },
 
@@ -70,8 +75,17 @@ let UIController = (function(){
       dom.p2NameScore.textContent = `${players.player2Name}(${players.player2Sym})`;
     },
 
-    displayWnner: function(winner){
-      alert(`Congratulation ${winner.name} ! You won the game`);
+    displayResult: function(result){
+      if(result === true) {
+        alert('This is a draw');
+      } else {
+        alert(`Congratulations ${result.name}! You won the game`);
+      }
+    },
+
+    changePlayer: function(curPlayer, anotherPlayer) {
+      document.querySelector(`.${curPlayer.name}`).classList.toggle('active-player');
+      document.querySelector(`.${anotherPlayer.name}`).classList.toggle('active-player');
     },
 
     getDOMstrings: function(){
@@ -84,13 +98,14 @@ let UIController = (function(){
 let gameLogic = (function(UICtrl){
   const DOM = UICtrl.getDOMstrings();
   const gameBoardArr = [ '', '', '', '', '', '', '', '', ''];
-  let player1, player2, current;
+  let player1, player2, current, passivePlayer;
+  let counter = 1;
   let eventHandler = function(){
     DOM.setPlayersButton.addEventListener('click', setPlayers);
     const allCells = document.querySelector('.board');
     allCells.addEventListener('click', selectCell);
   };
-  
+
   const createPlayers = function(playersInfo){
     player1 = player(playersInfo.player1Name, playersInfo.player1Sym, true);
     player2 = player(playersInfo.player2Name, playersInfo.player2Sym);
@@ -105,10 +120,12 @@ let gameLogic = (function(UICtrl){
 
   const currrentPlayer = () => {
    current = player1.isTurn === true ? player1 : player2;
+   passivePlayer = current === player2 ? player1 : player2;
   };
 
 
   const togglePlayer = () => {
+    counter++;
     if(current === player1) {
       player1.isTurn = false;
       player2.isTurn = true;
@@ -125,17 +142,26 @@ let gameLogic = (function(UICtrl){
     gameBoardArr[clickedCell - 1] = current.symbol;
     current.playerChoices.push(clickedCell);
     UICtrl.displaySym(gameBoardArr);
-    determineWinner();
+    result();
     togglePlayer();
+    UICtrl.changePlayer(current, passivePlayer);
     }
   };
 
-  const determineWinner = function() {
-    const x = checkWinner();
-    if(x === true) {
-      UICtrl.displayWnner(current);
+  const result = function(){
+    if(counter >= 5 && checkWinner() === true) {
+      console.log(current);
+      UICtrl.displayResult(current);
+    } else if(counter === 9 && checkDraw() === true) {
+      UICtrl.displayResult(true);
     }
+  }
 
+  const checkDraw = function(){
+    if(!gameBoardArr.includes('') && checkWinner() !== true) {
+      return true;
+    }
+    return false;
   };
 
   const checkWinner = function() {

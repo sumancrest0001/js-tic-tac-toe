@@ -118,6 +118,7 @@ table {
   justify-content: space-around;
   flex-wrap: wrap;
   padding: 10px;
+  padding-bottom: 0;
   font-size: 1.5rem;
   text-align: center;
   font-weight: bold;
@@ -125,19 +126,22 @@ table {
 
 .player-scores {
   display: flex;
-  padding: 10px;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .info-score {
   width: 100%;
   padding: 10px;
+  padding-bottom: 0;
 }
 .player-1 {
   border-right: 3px solid black;
-  padding-right: 20px;
+}
+.player-1, .player-2 {
+  width: 50%;
 }
 
-.player-2 {
-  padding-left: 20px;
+.active-player {
+  background-color: #F5AD42;
 }
-
