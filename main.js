@@ -1,15 +1,15 @@
 
-const player = (name, symbol, isTurn = false) => {
+const player = (name, symbol, isTurn = false, score = 0) => {
   const playerChoices = [];
   return {
-    name, symbol, isTurn, playerChoices,
+    name, symbol, isTurn, playerChoices, score,
   };
 };
 
 const UIController = (() => {
   const dom = {
     setPlayersButton: document.querySelector('.submit-button'),
-    newGameButton: document.querySelector('.new-game-button'),
+    newGameBtn: document.querySelector('.new-game-button'),
     cell1: document.getElementById('cell-1'),
     cell2: document.getElementById('cell-2'),
     cell3: document.getElementById('cell-3'),
@@ -25,6 +25,7 @@ const UIController = (() => {
     p2Score: document.getElementById('p2-score'),
     p1Section: document.querySelector('.player-1'),
     p2Section: document.querySelector('.player-2'),
+    board: document.querySelector('.board'),
   };
 
   const gameBoard = {
@@ -86,6 +87,15 @@ const UIController = (() => {
       }
     },
 
+    displayScore(player1, player2) {
+      console.log(player1);
+      console.log(player2);
+      console.log(dom.p1Score);
+      console.log(dom.p2Score);
+      dom.p1Score.textContent = player1;
+      dom.p2Score.textContent = player2;
+    },
+
     changePlayer(curPlayer, anotherPlayer) {
       document.querySelector(`.${curPlayer.name}`).classList.toggle('active-player');
       document.querySelector(`.${anotherPlayer.name}`).classList.toggle('active-player');
@@ -100,15 +110,9 @@ const UIController = (() => {
 
 const gameLogic = ((UICtrl) => {
   const DOM = UICtrl.getDOMstrings();
-  const gameBoardArr = ['', '', '', '', '', '', '', '', ''];
-  let player1; let player2; let current; let
-    passivePlayer;
+  let gameBoardArr = ['', '', '', '', '', '', '', '', ''];
+  let player1; let player2; let current; let passivePlayer;
   let counter = 1;
-  const eventHandler = function () {
-    DOM.setPlayersButton.addEventListener('click', setPlayers);
-    const allCells = document.querySelector('.board');
-    allCells.addEventListener('click', selectCell);
-  };
 
   const createPlayers = function (playersInfo) {
     player1 = player(playersInfo.player1Name, playersInfo.player1Sym, true);
@@ -121,7 +125,7 @@ const gameLogic = ((UICtrl) => {
     UICtrl.displayPlayerInfo(inputs);
   };
 
-  const currrentPlayer = () => {
+  const currentPlayer = () => {
     current = player1.isTurn === true ? player1 : player2;
     passivePlayer = current === player2 ? player1 : player2;
   };
@@ -136,27 +140,6 @@ const gameLogic = ((UICtrl) => {
       player1.isTurn = true;
     }
   };
-
-  const selectCell = (event) => {
-    if (event.target.className === 'cell') {
-      const clickedCell = event.target.dataset.value;
-      currrentPlayer();
-      gameBoardArr[clickedCell - 1] = current.symbol;
-      current.playerChoices.push(clickedCell);
-      UICtrl.displaySym(gameBoardArr);
-      result();
-      togglePlayer();
-      UICtrl.changePlayer(current, passivePlayer);
-    }
-  };
-
-  //selectCell
-  //currentPlayer()
-  //changeCellValue()
-  //UIctrol.diplaySym
-  //result
-  //togglePlayer
-  //UIctrl.changePlayer
 
   const checkWinner = () => {
     const winingComposition = [['1', '2', '3'], ['1', '4', '7'], ['1', '5', '9'], ['2', '5', '8'], ['3', '6', '9'], ['4', '5', '6'], ['7', '8', '9'], ['3', '5', '7']];
@@ -181,18 +164,69 @@ const gameLogic = ((UICtrl) => {
     return false;
   };
 
+  const resetBoard = () => {
+    gameBoardArr = ['', '', '', '', '', '', '', '', ''];
+  };
+
   const result = () => {
     if (counter >= 5 && checkWinner() === true) {
       UICtrl.displayResult(current);
+      current.score += 1;
     } else if (counter === 9 && checkDraw() === true) {
       UICtrl.displayResult(true);
     }
+  };
+
+  const newGame = () => {
+    resetBoard();
+    UICtrl.displaySym(gameBoardArr);
+    UICtrl.displayScore(player1.score, player2.score);
+  };
+
+  const playerSelection = (event) => {
+    if (event.target.className === 'cell') {
+      const clickedCell = event.target.dataset.value;
+      currentPlayer();
+      gameBoardArr[clickedCell - 1] = current.symbol;
+      current.playerChoices.push(clickedCell);
+      UICtrl.displaySym(gameBoardArr);
+      setTimeout(() => {
+        result();
+      }, 20);
+      togglePlayer();
+      UICtrl.changePlayer(current, passivePlayer);
+    }
+  };
+
+  // const playerSelection = (event) => {
+  //   if (event.target.className === 'cell') {
+  //     const clickedCell = event.target.dataset.value;
+  //     currentPlayer();
+  //     gameBoardArr[clickedCell - 1] = current.symbol;
+  //     current.playerChoices.push(clickedCell);
+  //   }
+  // };
+
+  // const gameOn = (event) => {
+  //   playerSelection(event);
+  //   currentPlayer();
+  //   UICtrl.displaySym(gameBoardArr);
+  //   result();
+  //   togglePlayer();
+  //   UICtrl.changePlayer(current, passivePlayer);
+  // };
+
+  const eventHandler = () => {
+    DOM.setPlayersButton.addEventListener('click', setPlayers);
+    DOM.board.addEventListener('click', playerSelection);
+    DOM.newGameBtn.addEventListener('click', newGame);
   };
 
   return {
     init() {
       UICtrl.displaySym(gameBoardArr);
       eventHandler();
+      // gameOn();
     },
   };
 })(UIController);
