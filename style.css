@@ -1,0 +1,187 @@
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+    vertical-align: baseline;
+    box-sizing: border-box;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.player-input-section {
+  padding: 20px;
+  width: 60%;
+  margin: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.player-input-section:hover{
+  transition: all .2s ease-in-out;
+  transform: scale(1.05);
+}
+
+.input-form{
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  text-align: center;
+  margin: auto;
+  justify-content: center;
+}
+
+.form-input {
+  border-radius: 5px;
+  height: 20px;
+  width: 40%;
+  padding: 5px;
+  font-size: 1.2rem;
+}
+
+.invisible {
+  display: none !important;
+}
+
+.red-alert {
+  border: red solid 1px;
+}
+
+.delete-alert {
+  border: none;
+}
+
+.submit-button {
+  display: flex;
+  align-self: center;
+  margin: auto;
+  padding: 10px 30px;
+  font-size: 1rem;
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+.playboard {
+  width: 40%;
+  margin: auto;
+  margin-top: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.board {
+  display: grid;
+  width: 100%;
+  background-color: blue;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 150px 150px 150px;
+}
+
+.cell {
+  text-align: center;
+  font-size: 150px;
+  color: #fff;
+  border: 5px solid #000;
+}
+
+.new-round-button, .reset-game-button {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  width: 49.5%;
+}
+
+.playing-info {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px;
+  padding-bottom: 0;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.player-scores {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.info-score {
+  width: 100%;
+  padding: 10px;
+  padding-bottom: 0;
+}
+
+.player-1 {
+  border-right: 3px solid black;
+}
+
+.player-1, .player-2 {
+  width: 50%;
+}
+
+.active-player {
+  background-color: #F5AD42;
+}
+
+#messages {
+  display: block;
+  margin-top: 20px;
+  padding: 20px;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.visible {
+  display: block !important;
+}
+
+.alert-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
+}
