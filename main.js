@@ -45,15 +45,16 @@ const UIController = (() => {
 
   return {
     displaySym(gameBoardArr) {
-      gameBoard.cell1.textContent = gameBoardArr[0];
-      gameBoard.cell2.textContent = gameBoardArr[1];
-      gameBoard.cell3.textContent = gameBoardArr[2];
-      gameBoard.cell4.textContent = gameBoardArr[3];
-      gameBoard.cell5.textContent = gameBoardArr[4];
-      gameBoard.cell6.textContent = gameBoardArr[5];
-      gameBoard.cell7.textContent = gameBoardArr[6];
-      gameBoard.cell8.textContent = gameBoardArr[7];
-      gameBoard.cell9.textContent = gameBoardArr[8];
+      const [a, b, c, d, e, f, g, h, i] = [...gameBoardArr];
+      gameBoard.cell1.textContent = a;
+      gameBoard.cell2.textContent = b;
+      gameBoard.cell3.textContent = c;
+      gameBoard.cell4.textContent = d;
+      gameBoard.cell5.textContent = e;
+      gameBoard.cell6.textContent = f;
+      gameBoard.cell7.textContent = g;
+      gameBoard.cell8.textContent = h;
+      gameBoard.cell9.textContent = i;
     },
 
     getPlayers() {
@@ -69,9 +70,10 @@ const UIController = (() => {
     },
 
     validatePlayerSymbol() {
-      if (this.getPlayers().player1Sym === this.getPlayers().player2Sym) {
+      if ((this.getPlayers().player1Sym === this.getPlayers().player2Sym)
+      || (this.getPlayers().player1Sym.length > 1 || this.getPlayers().player2Sym.length > 1)) {
         dom.messages.classList.add('alert-message');
-        dom.messages.textContent = 'Choose another symbol';
+        dom.messages.textContent = 'Choose a one letter symbol';
         return false;
       }
       document.getElementById('player-1-symbol').classList.toggle('delete-alert');
@@ -224,6 +226,7 @@ const gameLogic = ((UICtrl) => {
     }
   };
 
+  /* eslint no-restricted-globals: ["error", "event"] */
   const resetGame = () => {
     location.reload();
   };
